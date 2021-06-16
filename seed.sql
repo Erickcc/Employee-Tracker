@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 INSERT INTO department(name)
 VALUES ("Sales");
 
@@ -32,17 +34,17 @@ INSERT INTO role(title, salary, department_id)
 VALUES ("Lawyer", "190000", 4);
 
 
-INSERT INTO employee(first_name, last_name, role_id)
-VALUES ("John","Doe", 1);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("John","Doe", 1, 3);
 
-INSERT INTO employee(first_name, last_name, role_id)
-VALUES ("Mike","Chan", 2);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Mike","Chan", 2, 1);
 
 INSERT INTO employee(first_name, last_name, role_id)
 VALUES ("Ashley","Rodriguez", 3);
 
-INSERT INTO employee(first_name, last_name, role_id)
-VALUES ("Kevin","Tupik", 4);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Kevin","Tupik", 4, 3);
 
 INSERT INTO employee(first_name, last_name, role_id)
 VALUES ("Malia","Brown", 4);
@@ -50,8 +52,10 @@ VALUES ("Malia","Brown", 4);
 INSERT INTO employee(first_name, last_name, role_id)
 VALUES ("Sarah","Lourd", 5);
 
-INSERT INTO employee(first_name, last_name, role_id)
-VALUES ("Tom","Allen", 6);
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES ("Tom","Allen", 6, 5);
 
 INSERT INTO employee(first_name, last_name, role_id)
 VALUES ("Allan","Smith", 7);
+
+SET FOREIGN_KEY_CHECKS=1;
