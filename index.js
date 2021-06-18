@@ -320,6 +320,76 @@ const getNewRole = () =>{
   });
 }
 
+// 
+const viewDepartments = () => {
+  const query = 'SELECT department.name as Departments FROM department';
+  connection.query(query, function (err, res) {
+    console.table(res);
+    whatToDo();
+  });
+}
+
+// 
+const viewRoles = () => {
+  const query = 'SELECT role.title as Roles FROM role';
+  connection.query(query, function (err, res) {
+    console.table(res);
+    whatToDo();
+  });
+}
+
+//
+const updateRole = () => {
+  const query = "SELECT e.id, CONCAT(m.first_name, ' ', m.last_name) as employee "+
+                "FROM employee e "+
+                "LEFT JOIN employee m "+
+                "ON e.id = m.id";
+  const employees = [];
+  connection.query(query, function (err, employeeT) {
+    employeeT.forEach(({id, employee}) => {
+      employees.push(employee);
+    });
+    inquirer
+      .prompt(
+        {
+          type: "list",
+          message: "Whose role do you want to update?",
+          choices: employees,
+          name: "employee",
+        }
+      )
+      .then((employeeQ) => {
+        const query2 = "SELECT id, title FROM role;";
+        const roles = [];
+        connection.query(query2, function (err, roleT) {
+          roleT.forEach(({id, title}) => {
+            roles.push(title);
+          })
+          inquirer
+            .prompt(
+              {
+                type: "list",
+                message: "Select the new role?",
+                choices: roles,
+                name: "role",
+              }
+            )
+            .then((roleQ) => {
+              const chosenRole = roleT.find( ({id, title}) => title === roleQ.role);
+              const chosenEmployee = employeeT.find( ({id, employee}) => employee === employeeQ.employee);
+              console.log(chosenRole);
+              console.log(chosenEmployee);
+              const query3 = "UPDATE employee SET role_id = ? WHERE id = ?";
+              connection.query(query3, [chosenRole.id, chosenEmployee.id],function (err, roleT) {
+                console.log("Updated Role succesfully");
+                whatToDo();
+              });
+            });
+        });
+      });
+  });
+}
+
 // Starting question
 const whatToDo = () => {
   inquirer
@@ -346,6 +416,12 @@ const whatToDo = () => {
         getNewRole();
       }else if(answer.whatToDo === 'Add Employee'){
         createNew('','employee');
+      }else if(answer.whatToDo === 'View Departments'){
+        viewDepartments();
+      }else if(answer.whatToDo === 'View Roles'){
+        viewRoles();
+      }else if(answer.whatToDo === 'Update Employee Role'){
+        updateRole();
       }
     });
 };
